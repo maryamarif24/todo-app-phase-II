@@ -41,9 +41,21 @@ app = FastAPI(
 # CORS configuration
 frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
 
+# Parse multiple origins from FRONTEND_URL (comma-separated) or use default
+origins = [url.strip() for url in frontend_url.split(",") if url.strip()]
+
+# Add common development and production URLs
+default_origins = [
+    "http://localhost:3000",
+    "https://todo-app-phase-ii-veok.vercel.app",
+]
+
+# Combine and deduplicate origins
+all_origins = list(set(origins + default_origins))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[frontend_url],
+    allow_origins=all_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
