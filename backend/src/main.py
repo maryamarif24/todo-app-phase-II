@@ -1,0 +1,66 @@
+"""
+FastAPI application entry point for the Todo API.
+
+This module initializes the FastAPI application with CORS configuration,
+API routers, and health check endpoints.
+"""
+
+import os
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from .models.database import init_db, close_db
+from .api.auth import auth_router
+from .api.todos import todos_router
+
+
+# Application lifespan manager
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Application lifespan handler for startup and shutdown."""
+    # Startup (sync functions called without await since using psycopg2 sync driver)
+    print("Starting Todo API...")
+    init_db()
+    print("Database initialized successfully!")
+    yield
+    # Shutdown
+    print("Shutting down Todo API...")
+    close_db()
+    print("Database connections closed!")
+
+
+# Create FastAPI application
+app = FastAPI(
+    title="Todo API",
+    description="Full-stack web todo application API",
+    version="1.0.0",
+    lifespan=lifespan,
+)
+
+# CORS configuration
+frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[frontend_url],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include API routers
+app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
+app.include_router(todos_router, prefix="/todos", tags=["Todos"])
+
+
+@app.get("/", tags=["Health"])
+async def root():
+    """Root endpoint for health check."""
+    return {"status": "healthy", "message": "Todo API is running"}
+
+
+@app.get("/health", tags=["Health"])
+async def health_check():
+    """Health check endpoint."""
+    return {"status": "healthy"}

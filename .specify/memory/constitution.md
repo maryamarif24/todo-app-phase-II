@@ -1,17 +1,18 @@
 <!--
 Sync Impact Report:
-- Version change: 1.0.0 → 2.0.0
-- Modified principles:
-  - I. Spec-Driven Development (expanded with Constitution → Specs → Plan → Tasks → Implement flow)
-  - II. In-Memory Storage → REMOVED (now phase-specific)
-  - III. CLI-First Interface → REMOVED (now phase-specific)
-  - IV. Simple Functions and Clean Architecture → IV. Quality Principles (expanded)
-  - V. Python 3.13+ Only → REMOVED (merged into Technology Constraints)
-  - VI. Phase I Boundaries → III. Phase Governance (expanded to multi-phase)
-- Added sections: II. Agent Behavior Rules (new), IV. Technology Constraints (expanded), Phase Technology Matrix
-- Removed sections: None (reorganized)
+- Version change: 2.0.0 → 2.1.0
+- Modified technologies in Phase Technology Matrix:
+  - FastAPI: Phase III → Phase II
+  - SQLModel: Phase III → Phase II
+  - Neon DB: Phase III → Phase II
+  - Next.js: Phase IV → Phase II
+  - OpenAI Agents SDK: Phase III → Phase IV
+  - MCP: Phase III → Phase IV
+- Added technologies:
+  - Better Auth: Phase II
+- Removed technologies: None
 - Templates requiring updates:
-  ✅ .specify/templates/plan-template.md (Constitution Check section remains generic)
+  ✅ .specify/templates/plan-template.md (no constitution-specific mandates)
   ✅ .specify/templates/spec-template.md (no constitution-specific mandates)
   ✅ .specify/templates/tasks-template.md (no constitution-specific mandates)
 - Follow-up TODOs: (none)
@@ -61,17 +62,20 @@ All code and architecture MUST adhere to quality standards:
 
 #### Backend
 - **Python**: All backend code MUST use Python
-- **FastAPI**: Web framework for API layers (phases requiring web interfaces)
-- **SQLModel**: ORM and data modeling (phases requiring database persistence)
-- **Neon DB**: Managed PostgreSQL database (phases requiring persistence)
+- **FastAPI**: Web framework for API layers (Phase II+)
+- **SQLModel**: ORM and data modeling (Phase II+)
+- **Neon DB**: Managed PostgreSQL database (Phase II+)
 
 #### Frontend
-- **Next.js**: Frontend framework for web interfaces (Phase III+)
-- **TypeScript**: Type-safe JavaScript for frontend code
+- **Next.js**: Frontend framework for web interfaces (Phase II+)
+- **TypeScript**: Type-safe JavaScript for frontend code (Phase II+)
 
-#### Agent & Integration
-- **OpenAI Agents SDK**: Agent orchestration and tool usage
-- **MCP (Model Context Protocol)**: Agent communication and tool integration
+#### Authentication
+- **Better Auth**: Authentication framework for signup/signin (Phase II+)
+
+#### Agent & Integration (Phase IV+)
+- **OpenAI Agents SDK**: Agent orchestration and tool usage (Phase IV+)
+- **MCP (Model Context Protocol)**: Agent communication and tool integration (Phase IV+)
 
 #### Infrastructure (Later Phases)
 - **Docker**: Containerization (Phase III+)
@@ -80,9 +84,10 @@ All code and architecture MUST adhere to quality standards:
 - **Dapr**: Distributed application runtime (Phase V)
 
 ### Prohibited Technologies
-- **Unauthorized Persistence**: Any database or storage not in approved stack (e.g., MongoDB, Redis, filesystem persistence)
+- **Unauthorized Persistence**: Any database or storage not in approved stack (e.g., MongoDB, Redis, filesystem persistence beyond Phase I)
 - **Unauthorized Web Frameworks**: Any web framework besides FastAPI (e.g., Flask, Django, Express.js)
-- **Unauthorized Frontend**: Any frontend framework besides Next.js (e.g., React, Vue, Angular, Svelte)
+- **Unauthorized Frontend**: Any frontend framework besides Next.js (e.g., React, Vue, Angular, Svelte standalone)
+- **Unauthorized Auth**: Any authentication framework besides Better Auth (e.g., NextAuth, Auth.js, Clerk) unless formally approved
 - **Stateful Services**: Services that maintain implicit state (state MUST be explicit and managed)
 - **Alternative Orchestration**: Kubernetes alternatives (e.g., Docker Swarm, Nomad) unless formally approved
 - **Alternative Messaging**: Kafka alternatives (e.g., RabbitMQ, AWS SQS) unless formally approved
@@ -111,12 +116,14 @@ All code and architecture MUST adhere to quality standards:
 | CLI Interface | ✅ | ✅ | ✅ | ✅ | ✅ |
 | In-Memory Storage | ✅ | ❌ | ❌ | ❌ | ❌ |
 | FastAPI | ❌ | ✅ | ✅ | ✅ | ✅ |
-| SQLModel | ❌ | ❌ | ✅ | ✅ | ✅ |
-| Neon DB | ❌ | ❌ | ✅ | ✅ | ✅ |
-| Next.js | ❌ | ❌ | ❌ | ✅ | ✅ |
-| OpenAI Agents SDK | ❌ | ❌ | ✅ | ✅ | ✅ |
-| MCP | ❌ | ❌ | ✅ | ✅ | ✅ |
-| Docker | ❌ | ❌ | ❌ | ✅ | ✅ |
+| SQLModel | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Neon DB (PostgreSQL) | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Next.js | ❌ | ✅ | ✅ | ✅ | ✅ |
+| TypeScript | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Better Auth | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Docker | ❌ | ❌ | ✅ | ✅ | ✅ |
+| OpenAI Agents SDK | ❌ | ❌ | ❌ | ✅ | ✅ |
+| MCP | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Kubernetes | ❌ | ❌ | ❌ | ❌ | ✅ |
 | Kafka | ❌ | ❌ | ❌ | ❌ | ✅ |
 | Dapr | ❌ | ❌ | ❌ | ❌ | ✅ |
@@ -125,6 +132,45 @@ All code and architecture MUST adhere to quality standards:
 - ✅ = Technology is in scope for this phase
 - ❌ = Technology is out-of-scope for this phase
 - Earlier phase technologies remain available in later phases (e.g., CLI remains in Phase V)
+- Authentication (Better Auth) is allowed starting Phase II
+- Web frontend (Next.js) is allowed starting Phase II
+- Neon PostgreSQL is allowed starting Phase II
+- AI and agent frameworks (OpenAI Agents SDK, MCP) are NOT allowed until Phase IV
+
+## Phase Definitions
+
+### Phase I: In-Memory Console Application
+- Python CLI application only
+- No persistence (in-memory storage only)
+- No network access
+- No authentication
+- No web interface
+
+### Phase II: Full-Stack Web Application
+- Python REST API (FastAPI)
+- Neon Serverless PostgreSQL database
+- SQLModel for ORM/data modeling
+- Next.js frontend (React, TypeScript)
+- Better Auth for authentication (signup/signin)
+- Full web application architecture
+
+### Phase III: Containerized Deployment
+- Docker containerization
+- Cloud deployment preparation
+- All Phase II technologies continue
+
+### Phase IV: Agent-Enabled Cloud Platform
+- Kubernetes orchestration
+- OpenAI Agents SDK for agent capabilities
+- MCP for agent communication
+- Advanced cloud infrastructure
+- All previous phase technologies continue
+
+### Phase V: Distributed Systems
+- Dapr for distributed application runtime
+- Kafka for event streaming
+- Full microservices architecture
+- All previous phase technologies continue
 
 ## Development Workflow
 
@@ -153,7 +199,7 @@ All code and architecture MUST adhere to quality standards:
 - If tests are requested: Red-Green-Refactor MUST be followed strictly
 - Test files MUST be in `tests/` directory at repository root
 - Backend tests: `pytest` (standard Python testing tool)
-- Frontend tests (Phase III+): Jest or Testing Library (to be defined in phase spec)
+- Frontend tests (Phase II+): Jest or Testing Library (to be defined in phase spec)
 
 ### Phase Transition
 - Phase transition occurs ONLY after all planned features for current phase are complete
@@ -187,4 +233,4 @@ This constitution is the supreme governing document for the "Evolution of Todo" 
 ### Scope Boundaries
 This constitution governs Phase I through Phase V of the "Evolution of Todo" project. Each phase is scoped independently by its specification, but all phases remain bound by these core principles and governance rules. Phases beyond V require formal constitution amendment.
 
-**Version**: 2.0.0 | **Ratified**: 2024-12-24 | **Last Amended**: 2024-12-24
+**Version**: 2.1.0 | **Ratified**: 2024-12-24 | **Last Amended**: 2024-12-27
