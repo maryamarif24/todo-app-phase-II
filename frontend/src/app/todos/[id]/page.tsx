@@ -50,11 +50,12 @@ export default function EditTodoPage() {
     }
 
     if (response.data) {
+      const todoData = response.data;
       setState(prev => ({
         ...prev,
-        todo: response.data,
-        title: response.data.title,
-        description: response.data.description || '',
+        todo: todoData,
+        title: todoData.title,
+        description: todoData.description || '',
         loading: false,
       }));
     }
