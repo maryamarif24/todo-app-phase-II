@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(netstat -ano)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(git push:*)"
     ]
   }
 }
