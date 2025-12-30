@@ -83,7 +83,7 @@ export function SignupForm() {
       )}
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="email" className="block text-sm font-medium style={{ color: "#7F1734", marginBottom: "0.25rem" }}">
           Email
         </label>
         <input
@@ -98,7 +98,7 @@ export function SignupForm() {
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="password" className="block text-sm font-medium style={{ color: "#7F1734", marginBottom: "0.25rem" }}">
           Password
         </label>
         <input
@@ -113,7 +113,7 @@ export function SignupForm() {
       </div>
 
       <div>
-        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="confirmPassword" className="block text-sm font-medium style={{ color: "#7F1734", marginBottom: "0.25rem" }}">
           Confirm Password
         </label>
         <input

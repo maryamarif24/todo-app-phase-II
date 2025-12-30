@@ -52,7 +52,7 @@ export function SigninForm() {
       )}
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="email" className="block text-sm font-medium style={{ color: "#7F1734", marginBottom: "0.25rem" }}">
           Email
         </label>
         <input
@@ -67,7 +67,7 @@ export function SigninForm() {
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="password" className="block text-sm font-medium style={{ color: "#7F1734", marginBottom: "0.25rem" }}">
           Password
         </label>
         <input

@@ -3,8 +3,8 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-4xl font-bold mb-8">Welcome to Todo App</h1>
-      <p className="mb-8 text-lg text-gray-600">
+      <h1 className="text-4xl font-bold mb-8" style={{ color: '#7F1734' }}>Welcome to Todo App</h1>
+      <p className="mb-8 text-lg" style={{ color: '#7F1734' }}>
         A full-stack web application for managing your todos
       </p>
       <div className="flex gap-4">
